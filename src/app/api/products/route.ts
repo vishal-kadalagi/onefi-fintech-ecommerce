@@ -13,6 +13,7 @@ export async function GET() {
     });
     return NextResponse.json(products);
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
+    console.error("API Error fetching products:", error);
+    return NextResponse.json({ error: 'Failed to fetch products', details: String(error) }, { status: 500 });
   }
 }
