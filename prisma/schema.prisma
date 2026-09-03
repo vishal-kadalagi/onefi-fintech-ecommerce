@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Product {
+  id          Int       @id @default(autoincrement())
+  slug        String    @unique
+  name        String
+  description String?
+  mrp         Float
+  price       Float
+  imageUrl    String
+  variants    Variant[]
+  emiPlans    EmiPlan[]
+}
+
+model Variant {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id])
+  type      String   // e.g., "color", "storage"
+  name      String   // e.g., "Silver", "256GB"
+}
+
+model EmiPlan {
+  id            Int      @id @default(autoincrement())
+  productId     Int
+  product       Product  @relation(fields: [productId], references: [id])
+  tenure        Int      // e.g., 3, 6, 12 months
+  monthlyAmount Float
+  interestRate  Float    // e.g., 0, 10.5
+  cashback      Float?   // e.g., 7500
+}
